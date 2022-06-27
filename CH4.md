@@ -63,3 +63,31 @@ db.routes.find({ "stops": { "$ne": 0 }}).pretty()
 db.routes.find({ "stops": { "$gt": 0 }}).pretty()
 ```
 - This query will also work, given that there are no non-negative or non- numeric values in this collection. It returns all documents where the stops field is not equal to 0.
+
+### Logic Operators
+
+```
+Problem:
+
+To complete this exercise connect to your Atlas cluster using the in-browser IDE space at the end of this chapter.
+
+How many businesses in the sample_training.inspections dataset have the inspection result "Out of Business" and belong to the "Home Improvement Contractor - 100" sector?
+```
+
+```sql
+db.inspections.find({ "result": "Out of Business", "sector": "Home Improvement Contractor - 100" }).count()
+```
+- This query will return 4 which is the amount of businesses with that attributes
+
+```
+Problem:
+
+Which is the most succinct query to return all documents from the sample_training.inspections collection where the inspection date is either "Feb 20 2015", or "Feb 21 2015" and the company is not part of the "Cigarette Retail Dealer - 127" sector?
+```
+```sql
+db.inspections.find(
+  { "$or": [ { "date": "Feb 20 2015" },
+             { "date": "Feb 21 2015" } ],
+    "sector": { "$ne": "Cigarette Retail Dealer - 127" }})
+```
+- This query accounts for both dates that we are looking for and excludes all documents where the sector is "Cigarette Retail Dealer - 127" by using the $ne not equal comparison operator.
